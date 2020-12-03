@@ -24,7 +24,7 @@ router.get("/usuarios" , (req,res) => {
 
 });
 //con params se accede al id
-router.get("/usuarios/:id" , (req,res) => {
+/* router.get("/usuarios/:id" , (req,res) => {
     const userID = req.params.id;
     sequelize.query('SELECT * from usuarios where id = :id',
     {replacements:{id:userID, }, type: sequelize.QueryTypes.SELECT}
@@ -32,22 +32,28 @@ router.get("/usuarios/:id" , (req,res) => {
         res.json(resultados);
     });
     
-});
+}); */
+
 
 // login
-router.post("/login/:name:psw" , (req,res) => {
-    const username = req.body.username; 
-    const pass = req.body.pwd;    
-    sequelize.query('SELECT * from usuarios where username = :name and pass = :pwd',    
-    {replacements:{username:username}, type: sequelize.QueryTypes.SELECT}
-        ).then(function(resultados){
-                res.json(resultados);
-        });    
+router.post("/login/:name/:pwd",(req,res) => {
+    const username = req.params.name;
+    const pass = req.params.pwd;
+    console.log(username);
+    console.log(pass);
+    sequelize.query('SELECT * from usuarios where username = :name AND pass = :pwd',
+    {replacements:{name:username,pwd:pass}, type: sequelize.QueryTypes.SELECT}
+    ).then(function(resultados){
+        res.json(resultados);
+    });   
 });
+
+
 
 //update 
 router.post("/update/:pwd" , (req,res) => {
-    const pass = req.body.pwd;   
+    const pass = req.params.pwd;   
+    console.log(pass);
     sequelize.query( 'UPDATE tabla SET campo ="pass" WHERE id = ?',
     {replacements:[2]}) 
     .then(function(resultados) { 
